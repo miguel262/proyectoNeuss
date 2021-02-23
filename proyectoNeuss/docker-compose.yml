@@ -1,0 +1,27 @@
+version: "3"
+services:
+  database:
+    build: ./server/database/
+    command: mysqld --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_DATABASE: neuss
+      MYSQL_ROOT_PASSWORD: admin
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+      DATABASE_HOST: localhost
+    ports:
+      - "3358:3306"
+  server:
+    build: .
+    environment: 
+      MYSQL_URL: localhost
+      MYSQL_USERNAME: admin
+      MYSQL_PASSWORD: admin
+      MYSQL_DATABASE: neuss
+      MYSQL_PORT: 3358
+      PORT: 3350
+    ports:
+      - "3050:3050"
+    depends_on: 
+      - database
+    restart: always
